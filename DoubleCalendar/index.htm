@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>演示：jQuery日期范围选择器</title>
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/jquery.daterangepicker.js"></script>  
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/daterangepicker.css" rel="stylesheet" />
+    <style type="text/css">
+        
+    </style>
+</head>
+<body>
+    <input type="text" class="form-control" id="date-range0" placeholder="点击选取" readonly="readonly" style="width:430px;">
+    <!--<a href="#" onclick="test()">aaaaaa</a>-->
+<script>
+$(function(){
+    $('#date-range0').dateRangePicker({
+        autoClose: true
+    });
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    if (month < 10) {
+        month = "0" + month;
+    }
+    var firstDate = year + "-" + month + "-0" + 1;
+    var lastDay = getLastDay(year, month);
+    var lastDate = year + "-" + month + "-" + lastDay;
+
+    $('#date-range0').val(firstDate + " 至 " + lastDate);
+});
+function test() {
+    //日期格式：年-月-日("2018-03-13")
+    var startDate = $("#date-range0").val().substring(0, $("#date-range0").val().indexOf("至") - 1);
+    var endDate = $("#date-range0").val().substring($("#date-range0").val().indexOf("至") + 1);
+}
+//获取一个月的最后一天
+function getLastDay(year, month) {
+    var new_year = year;        //cn:取当前的年份  en: get the current year
+    var new_month = month++;    //cn:取下一个月的第一天，方便计算（最后一天不固定）  en:get the first day of next month
+    if (month > 12) {                //如果当前大于12月，则年份转到下一年    en: if the month is greater than December than get the next year
+        new_month -= 12;            //月份减       
+        new_year++;                //年份增       
+    }
+    var new_date = new Date(new_year, new_month, 1);   // 取当年当月的 下个 月中的第一天  
+    // 获取当月最后一天日期   get the last day of the current month     
+    return (new Date(new_date.getTime() - 1000 * 60 * 60 * 24)).getDate();
+}
+</script> 
+</body>
+</html>
